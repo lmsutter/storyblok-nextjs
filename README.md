@@ -8,7 +8,9 @@ First, run the development server:
 
 pnpm dev
 
+npx local-ssl-proxy --key localhost-key.pem --cert localhost.pem --source 3001 --target 3000 
 ```
+run the npx script to get a https local host
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
