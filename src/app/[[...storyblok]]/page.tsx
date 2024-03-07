@@ -24,7 +24,7 @@ export default async function Page({ params } : { params: { storyblok?: string[]
     return (
         <main>
             <StoryblokStory story={currentStory} />
-      
+            text
         </main>
     );
 }

@@ -30,6 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoryblokProvider>
+
       <html lang="en">
         <body className={inter.className}>{children}</body>
       </html>
