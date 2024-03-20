@@ -16,19 +16,31 @@ export default async function Page({
 }) {
   const res = await getStories();
 
-  let currentStory = null;
+  let currentStory: ISbStoryData | null = null;
+
+  if (!params.storyblok) {
+    currentStory = res.data.stories.find(
+      (story: ISbStoryData) => story.name === 'Home',
+    );
+  }
+
   res.data.stories.forEach((story: ISbStoryData) => {
+    if (currentStory !== null) {
+      return;
+    }
     if (params.storyblok) {
+      if (story.is_startpage) {
+        if (params.storyblok.join('/') + '/' === story.full_slug) {
+          currentStory = story;
+        }
+      }
       if (params.storyblok.join('/') === story.full_slug) {
         currentStory = story;
       }
     }
   });
-  if (!currentStory) {
-    currentStory = res.data.stories.find(
-      (story: ISbStoryData) => story.name === 'Home',
-    );
-  }
+
+  console.log(params);
 
   return (
     <main>
@@ -45,7 +57,6 @@ export async function generateStaticParams() {
   // let res  = await storyblokApi.get("cdn/stories/", sbParams, {cache: "no-store"});
 
   const res = await getStories();
-  console.log(res.data.stories);
 
   const sbPages = res.data.stories.map((story: ISbStoryData) => {
     if (story.name === 'Home') {
@@ -54,7 +65,7 @@ export async function generateStaticParams() {
       };
     }
     return {
-      storyblok: [...story.full_slug.replace(/^pages/, '').split('/')],
+      storyblok: [...story.full_slug.split('/')],
     };
   });
 
